@@ -69,6 +69,23 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<div style="
+    font-size:0.72rem;
+    font-weight:700;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    background:linear-gradient(90deg,#00e5cc,#4da6ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    margin-bottom:14px;
+    margin-top:6px;
+">
+    Analysis Overview
+</div>
+""", unsafe_allow_html=True)
+
 # ── KPI Cards ─────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="kpi-grid">
@@ -119,7 +136,7 @@ st.markdown("""
     Does spending more money guarantee winning more games?
 </div>
 <p style="color:rgba(200,216,240,0.75);font-size:0.95rem;line-height:1.7;">
-    This project analyses a decade of financial and performance data across Europe's top 5 leagues -
+    This project analyses a decade of financial and performance data, between 2014-2024, across Europe's top 5 leagues -
     the Premier League, La Liga, Serie A, Bundesliga, and Ligue 1, <br> to understand how Squad Value
     and Transfer Spending relate to performance outcomes.
 </p>
@@ -128,6 +145,8 @@ st.markdown("""
     which ones fail despite heavy investment, <br> and how the connection between money and success shifts across different footballing environments.
 </p>
 """, unsafe_allow_html=True)
+
+st.markdown('<div class="fancy-divider"></div>', unsafe_allow_html=True)
 
 # ── Key findings ──────────────────────────────────────────────────────────────
 st.markdown("""
@@ -179,5 +198,3 @@ st.markdown("""
     <span>State-backed clubs initially overperform, then plateau over time</span>
 </div>
 """, unsafe_allow_html=True)
-
-st.markdown('<div class="fancy-divider"></div>', unsafe_allow_html=True)

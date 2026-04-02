@@ -8,6 +8,53 @@ from utils import (inject_css, load_data, section_header, insight, divider,
 st.set_page_config(page_title="Titles, Top 4 & Relegation", page_icon="⚽", layout="wide")
 inject_css()
 
+st.markdown("""
+<style>
+/* Tab row */
+div[data-baseweb="tab-list"] {
+    gap: 12px;
+    border-bottom: 1px solid rgba(99,179,255,0.18);
+    padding-bottom: 6px;
+}
+
+/* Individual tabs */
+button[data-baseweb="tab"] {
+    background: rgba(255,255,255,0.04) !important;
+    border: 1px solid rgba(99,179,255,0.14) !important;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 10px 18px !important;
+    color: #c8d8f0 !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+}
+
+/* Kill Streamlit default highlight lines */
+button[data-baseweb="tab"]::before,
+button[data-baseweb="tab"]::after {
+    display: none !important;
+    content: none !important;
+}
+
+button[data-baseweb="tab"] [data-testid="stMarkdownContainer"] p {
+    color: inherit !important;
+    font-size: 1rem !important;
+}
+
+/* Active tab */
+button[data-baseweb="tab"][aria-selected="true"] {
+    background: rgba(255,255,255,0.08) !important;
+    border: 1px solid rgba(99,179,255,0.28) !important;
+    color: #ffffff !important;
+    box-shadow: inset 0 -3px 0 #00e5cc !important;
+}
+
+/* Remove any red bottom border from tab highlight wrappers */
+div[data-baseweb="tab-highlight"] {
+    background: transparent !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 df = load_data()
 
 # Pre-compute buckets
@@ -16,18 +63,8 @@ df["spending_bucket"] = pd.cut(df["spending_rank"],
 df["value_bucket"] = pd.cut(df["value_rank"],
     bins=[0,3,6,10,15,25], labels=["Top 3","4–6","7–10","11–15","16+"])
 
-section_header("Titles, Top 4 & Relegation", "Does Money Buy Trophies?",
+section_header("Titles, Top 4 & Relegation", "Spending vs Trophies",
                "How financial strength maps to the three most critical competitive outcomes.")
-
-# ── Flourish ──────────────────────────────────────────────────────────────────
-st.markdown("#### Title Winners by Spending Rank")
-flourish_embed(
-    "PLACEHOLDER: https://flo.uri.sh/visualisation/YOUR_TITLES_CHART_ID/embed",
-    height=480,
-    caption="Recommended: Flourish Pie / Donut or Sankey — Title winners broken down by spending rank bucket"
-)
-
-divider()
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
 tab1, tab2, tab3 = st.tabs(["🏆 Title Winners", "⭐ Top 4 (UCL)", "⬇️ Relegation"])
@@ -57,7 +94,7 @@ with tab1:
         fig_pie.update_layout(
             paper_bgcolor="rgba(0,0,0,0)", font=dict(family="Inter",color="#c8d8f0"),
             title="Title Wins by Spending Rank Group",
-            showlegend=False, height=380, margin=dict(t=40,b=20),
+            margin=dict(t=70, b=20, l=20, r=40), height=430, showlegend=False,
         )
         st.plotly_chart(fig_pie, use_container_width=True)
 
@@ -78,30 +115,12 @@ with tab1:
             font=dict(family="Inter",color="#c8d8f0"),
             xaxis=dict(title="Spending Rank", dtick=1, gridcolor="rgba(99,179,255,0.1)"),
             yaxis=dict(title="Title Win Rate (%)", gridcolor="rgba(99,179,255,0.1)"),
-            margin=dict(t=20,b=20,l=20,r=40), height=320, showlegend=False,
+            margin=dict(t=70, b=20, l=20, r=40), height=430, showlegend=False,
             title="Title Win Rate by Spending Rank",
         )
         st.plotly_chart(fig_wr, use_container_width=True)
 
-    insight("30% of all titles were won by the single highest spender — far above the 5% random chance baseline. Yet 70% of titles were won outside the top spender, proving money helps but doesn't guarantee.")
-
-    divider()
-
-    # Title concentration
-    st.markdown("#### Title Concentration by Club and League (2014–2024)")
-    title_clubs = df[df["title_won"]==1].groupby(["league","club_name"]).size().reset_index(name="titles")
-    title_clubs["league_label"] = title_clubs["league"].map(LEAGUE_LABELS)
-    title_clubs = title_clubs.sort_values(["league","titles"], ascending=[True, False])
-
-    fig_conc = px.bar(title_clubs, x="titles", y="club_name", color="league",
-                      color_discrete_map=LEAGUE_COLORS,
-                      facet_col="league_label", facet_col_wrap=3,
-                      labels={"titles":"Titles Won","club_name":"Club"})
-    apply_template(fig_conc)
-    fig_conc.update_layout(showlegend=False, height=520)
-    fig_conc.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
-    st.plotly_chart(fig_conc, use_container_width=True)
-    insight("Bundesliga and Ligue 1 show extreme title concentration — Bayern and PSG dominated for most of the decade. The Premier League saw the most variety, with 5 different champions.")
+    insight("30% of all titles were won by the single highest spender - far above the 5% random chance baseline. Yet 70% of titles were won outside the top spender, proving money helps but doesn't guarantee.")
 
 # ── TAB 2: Top 4 ──────────────────────────────────────────────────────────────
 with tab2:
@@ -116,6 +135,11 @@ with tab2:
         apply_template(fig_t4s)
         fig_t4s.update_layout(showlegend=False, coloraxis_showscale=False)
         fig_t4s.update_traces(text=top4_spend["rate"].apply(lambda x: f"{x}%"), textposition="outside")
+        fig_t4s.update_layout(
+            margin=dict(t=80, b=20, l=20, r=20),
+            height=430
+        )
+        fig_t4s.update_yaxes(range=[0, top4_spend["rate"].max() + 8])
         st.plotly_chart(fig_t4s, use_container_width=True)
 
     with col2:
@@ -128,9 +152,14 @@ with tab2:
         apply_template(fig_t4v)
         fig_t4v.update_layout(showlegend=False, coloraxis_showscale=False)
         fig_t4v.update_traces(text=top4_val["rate"].apply(lambda x: f"{x}%"), textposition="outside")
+        fig_t4v.update_layout(
+        margin=dict(t=80, b=20, l=20, r=20),
+        height=430
+        )
+        fig_t4v.update_yaxes(range=[0, top4_val["rate"].max() + 8])
         st.plotly_chart(fig_t4v, use_container_width=True)
 
-    insight("Top 3 spenders finish in the Champions League places 60–70% of the time. Beyond the top 6, the drop-off is steep — mid-table spenders rarely qualify.")
+    insight("Top 3 spenders finish in the Champions League places 60–70% of the time. Beyond the top 6, the drop-off is steep - mid-table spenders rarely qualify.")
 
 # ── TAB 3: Relegation ─────────────────────────────────────────────────────────
 with tab3:
@@ -145,6 +174,11 @@ with tab3:
         apply_template(fig_rs)
         fig_rs.update_layout(showlegend=False, coloraxis_showscale=False)
         fig_rs.update_traces(text=rel_spend["rate"].apply(lambda x: f"{x}%"), textposition="outside")
+        fig_rs.update_layout(
+        margin=dict(t=80, b=20, l=20, r=20),
+        height=430
+        )
+        fig_rs.update_yaxes(range=[0, rel_spend["rate"].max() + 8])
         st.plotly_chart(fig_rs, use_container_width=True)
 
     with col2:
@@ -157,6 +191,10 @@ with tab3:
         apply_template(fig_rv)
         fig_rv.update_layout(showlegend=False, coloraxis_showscale=False)
         fig_rv.update_traces(text=rel_val["rate"].apply(lambda x: f"{x}%"), textposition="outside")
+        fig_rv.update_layout(
+        margin=dict(t=80, b=20, l=20, r=20),
+        height=430
+        )
+        fig_rv.update_yaxes(range=[0, rel_val["rate"].max() + 8])
         st.plotly_chart(fig_rv, use_container_width=True)
-
-    insight("No club ranked in the top 3 by squad value has ever been relegated in this dataset. Bottom 5 spenders face dramatically higher relegation risk — financial weakness directly threatens survival.")
+    insight("No club ranked in the top 3 by squad value has ever been relegated in this dataset. Bottom 5 spenders face dramatically higher relegation risk. Financial weakness directly threatens survival.")

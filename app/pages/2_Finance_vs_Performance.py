@@ -76,7 +76,7 @@ df = load_data()
 
 section_header(
     "Finance vs Performance",
-    "Financial Power & On-Pitch Results",
+    "Financial Power & Performance Outcomes",
     "Explore how financial strength relates to on-pitch outcomes across leagues, seasons, and clubs."
 )
 
@@ -85,19 +85,28 @@ dff = df.copy()
 # ── Plotly scatter ────────────────────────────────────────────────────────────
 st.markdown("#### Explore the Data")
 
-col_a, col_b, col_c = st.columns(3)
+col_a, col_b, col_c, col_d = st.columns(4)
+
 with col_a:
     scatter_league = st.selectbox(
         "League",
         ["All"] + list(LEAGUE_LABELS.values())
     )
+
 with col_b:
+    scatter_season = st.selectbox(
+        "Season",
+        ["All"] + sorted(df["season"].unique())
+    )
+
+with col_c:
     col_x = st.selectbox(
         "Financial Metric",
         ["svalue_m", "spending_m"],
         format_func=lambda x: "Squad Value (€M)" if x == "svalue_m" else "Transfer Spending (€M)"
     )
-with col_c:
+
+with col_d:
     col_y = st.selectbox(
         "Performance Metric",
         ["points", "wins", "goal_difference", "position"],
@@ -112,6 +121,11 @@ with col_c:
 scatter_df = dff.copy()
 if scatter_league != "All":
     scatter_df = scatter_df[scatter_df["league_label"] == scatter_league]
+
+if scatter_season != "All":
+    scatter_df = scatter_df[scatter_df["season"] == scatter_season]
+
+    season_text = "" if scatter_season == "All" else f" ({scatter_season})"
 
 scatter_title = f"{'Squad Value' if col_x == 'svalue_m' else 'Transfer Spending'} vs {col_y.replace('_', ' ').title()}"
 
@@ -157,7 +171,7 @@ st.plotly_chart(fig_sc, use_container_width=True)
 divider()
 
 # ── Correlation heatmap ───────────────────────────────────────────────────────
-st.markdown("#### Correlation Matrix — Finance & Performance")
+st.markdown("#### Correlation Matrix - Finance & Performance")
 corr_cols = [
     "squad_market_value", "transfer_spending", "points", "wins",
     "goals_for", "goal_difference", "position"

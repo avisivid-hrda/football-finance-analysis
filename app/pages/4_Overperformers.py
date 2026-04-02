@@ -10,18 +10,8 @@ inject_css()
 df = load_data()
 dres = compute_residuals(df)
 
-section_header("Overperformers & Underperformers", "Who Beats (and Busts) Financial Expectations?",
-               "Residual analysis — comparing actual points to what a club's squad value predicted.")
-
-# ── Flourish ──────────────────────────────────────────────────────────────────
-st.markdown("#### Actual vs Expected Points — All Clubs")
-flourish_embed(
-    "PLACEHOLDER: https://flo.uri.sh/visualisation/YOUR_RESIDUAL_CHART_ID/embed",
-    height=520,
-    caption="Recommended: Flourish Connected Dot Plot or Scatter — Actual vs Predicted points"
-)
-
-divider()
+section_header("Overperformers & Underperformers", "Performance Exceeding vs Missing Expectations",
+               "Residual analysis - comparing actual points to what a club's squad value predicted.")
 
 # ── Residual basis selector ───────────────────────────────────────────────────
 residual_basis = st.radio("Residual Basis", ["Squad Value", "Transfer Spending"], horizontal=True)
@@ -74,35 +64,23 @@ with col2:
 
 col1i, col2i = st.columns(2)
 with col1i:
-    insight("Monaco 2016/17 — won Ligue 1 with 95 points despite a modest squad value. The Mbappé/Lemar generation before the selloff.")
+    insight("Monaco 2016/17 - won Ligue 1 with 95 points despite a modest squad value. The 'Mbappé/Lemar generation' before the selloff.")
 with col2i:
-    insight("Chelsea 2022/23 — worst underperformer: €574M spent, only 44 pts. The most extreme waste of resources in the entire dataset.")
+    insight("Chelsea 2022/23 - worst underperformer: €574M spent, only 44 pts. The most extreme waste of resources in the entire dataset.")
 
 divider()
 
 # ── Middle East ownership ─────────────────────────────────────────────────────
-st.markdown("#### 🕌 Middle East Owned Clubs — Performance vs Expectations Over Time")
+st.markdown("#### 🏦 Middle East Owned Clubs - Performance vs Expectations Over Time")
 me = dres[dres["middle_east_owned"] == 1].sort_values("year")
 
 fig_me = px.line(me, x="year", y=res_col, color="club_name",
                  color_discrete_sequence=["#00e5cc","#4da6ff","#f7c36a"],
                  markers=True,
                  labels={"year":"Year", res_col:"Residual (Actual − Predicted Points)", "club_name":"Club"},
-                 title="Residual Points — Middle East Owned Clubs")
+                 title="Residual Points - Middle East Owned Clubs")
 apply_template(fig_me)
 fig_me.add_hline(y=0, line_dash="dash", line_color="rgba(255,255,255,0.3)", annotation_text="Expected")
 fig_me.update_traces(line_width=2.5)
 st.plotly_chart(fig_me, use_container_width=True)
-insight("Man City and PSG initially overperformed heavily. As their squads became the most expensive in their leagues, their residuals converged to zero — great performance now simply meets inflated expectations.")
-
-divider()
-
-# ── Residual distribution ─────────────────────────────────────────────────────
-st.markdown("#### Residual Distribution — How Well Does Squad Value Predict Points?")
-fig_dist = px.histogram(sub, x="residual", nbins=40,
-                        color_discrete_sequence=["#4da6ff"],
-                        labels={"residual":"Residual (Actual − Predicted Points)"})
-fig_dist.add_vline(x=0, line_dash="dash", line_color="#00e5cc", annotation_text="0 (perfect prediction)")
-apply_template(fig_dist)
-st.plotly_chart(fig_dist, use_container_width=True)
-insight("Most prediction errors cluster near zero — the model is generally balanced. But errors can still be ±30 points, proving football isn't just about money.")
+insight("Man City and PSG initially overperformed heavily. As their squads became the most expensive in their leagues, their residuals converged to zero. Great performance now simply meets inflated expectations.")

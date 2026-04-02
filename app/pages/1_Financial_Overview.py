@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 from utils import (inject_css, load_data, section_header, insight, divider,
                    flourish_embed, apply_template, LEAGUE_COLORS, LEAGUE_LABELS)
 
-st.set_page_config(page_title="Financial Overview", page_icon="⚽", layout="wide")
+st.set_page_config(page_title="Financial Overview", page_icon="💰", layout="wide")
 inject_css()
 
 st.markdown("""
@@ -121,7 +121,7 @@ with tab1:
 with tab2:
     fig4 = px.box(df, x="league_label", y="svalue_m", color="league",
                   color_discrete_map=LEAGUE_COLORS,
-                  labels={"svalue_m":"Squad Value (€M)", "league_label":"League"},
+                  labels={"svalue_m":"Squad Value (€M)", "league_label":" "},
                   title="Squad Value Distribution by League")
     apply_template(fig4)
     fig4.update_layout(showlegend=False)
@@ -141,7 +141,7 @@ trend["league_label"] = trend["league"].map(LEAGUE_LABELS)
 
 fig5 = px.line(trend, x="year", y=col, color="league",
                color_discrete_map=LEAGUE_COLORS,
-               labels={"year":"Season Start Year", col: metric_choice},
+               labels={"year":" ", col: metric_choice},
                title=f"Average {metric_choice} by League Over Time",
                markers=True)
 apply_template(fig5)
