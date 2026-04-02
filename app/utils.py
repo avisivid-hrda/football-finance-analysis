@@ -231,12 +231,40 @@ def flourish_embed(url, height=500, caption=""):
 
 def apply_template(fig):
     fig.update_layout(
+        template="plotly_dark",  # ensures consistent base styling
+
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(255,255,255,0.03)",
-        font=dict(family="Inter", color="#c8d8f0", size=12),
-        legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(color="#c8d8f0")),
-        xaxis=dict(gridcolor="rgba(99,179,255,0.1)", linecolor="rgba(99,179,255,0.2)"),
-        yaxis=dict(gridcolor="rgba(99,179,255,0.1)", linecolor="rgba(99,179,255,0.2)"),
-        margin=dict(t=40, b=40, l=40, r=40),
+
+        font=dict(
+            family="Inter",
+            color="#c8d8f0"
+        ),
+
+        # ✅ Reliable title styling
+        title=dict(
+            font=dict(
+                color="#eaf2ff",
+                size=20
+            )
+        ),
+
+        xaxis=dict(
+            gridcolor="rgba(99,179,255,0.10)",
+            zerolinecolor="rgba(99,179,255,0.10)",
+            title_font=dict(color="#c8d8f0"),
+            tickfont=dict(color="#c8d8f0")
+        ),
+
+        yaxis=dict(
+            gridcolor="rgba(99,179,255,0.10)",
+            zerolinecolor="rgba(99,179,255,0.10)",
+            title_font=dict(color="#c8d8f0"),
+            tickfont=dict(color="#c8d8f0")
+        ),
+
+        legend=dict(
+            font=dict(color="#c8d8f0")
+        )
     )
     return fig

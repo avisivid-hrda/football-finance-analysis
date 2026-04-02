@@ -7,20 +7,74 @@ from utils import (inject_css, load_data, section_header, insight, divider,
 st.set_page_config(page_title="Financial Overview", page_icon="⚽", layout="wide")
 inject_css()
 
+st.markdown("""
+<style>
+/* Label */
+div[data-testid="stSelectbox"] label,
+div[data-testid="stSelectbox"] p {
+    color: #c8d8f0 !important;
+    font-weight: 600 !important;
+}
+
+/* Closed select box */
+div[data-baseweb="select"] > div {
+    background: rgba(255,255,255,0.04) !important;
+    border: 1px solid rgba(99,179,255,0.18) !important;
+    border-radius: 10px !important;
+    color: #c8d8f0 !important;
+}
+
+/* Text shown in closed box */
+div[data-baseweb="select"] div,
+div[data-baseweb="select"] span,
+div[data-baseweb="select"] input {
+    color: #c8d8f0 !important;
+}
+
+/* Dropdown menu surface */
+div[role="listbox"],
+ul[role="listbox"] {
+    background: #142a63 !important;
+    border: 1px solid rgba(99,179,255,0.18) !important;
+}
+
+/* Each option row */
+div[role="option"],
+li[role="option"] {
+    background: #142a63 !important;
+    color: #c8d8f0 !important;
+}
+
+/* Text inside each option — this is the part your current CSS misses */
+div[role="option"] div,
+div[role="option"] span,
+li[role="option"] div,
+li[role="option"] span {
+    color: #c8d8f0 !important;
+    fill: #c8d8f0 !important;
+}
+
+/* Hover / selected */
+div[role="option"]:hover,
+li[role="option"]:hover {
+    background: rgba(77,166,255,0.18) !important;
+}
+
+/* High-specificity fallback for BaseWeb-rendered menu items */
+body [data-baseweb="menu"] * {
+    color: #0a0e1a !important;
+},
+body ul[role="listbox"] *,
+body div[role="listbox"] * {
+    color: #c8d8f0 !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 df = load_data()
 
 section_header("Financial Overview", "Financial Landscape",
                "How money is distributed across clubs, leagues and time.")
-
-# ── Flourish racing bar ───────────────────────────────────────────────────────
-st.markdown("#### Squad Value Growth Over Time")
-flourish_embed(
-    "PLACEHOLDER: https://flo.uri.sh/visualisation/YOUR_RACE_BAR_ID/embed",
-    height=520,
-    caption="Recommended: Flourish Bar Chart Race — Average Squad Value by League, 2014–2024"
-)
-
-divider()
 
 # ── Distributions ─────────────────────────────────────────────────────────────
 st.markdown("#### Distribution of Squad Market Value & Transfer Spending")
@@ -107,17 +161,31 @@ cv["label"] = cv["league"].map(LEAGUE_LABELS)
 cv["color"] = cv["league"].map(LEAGUE_COLORS)
 
 fig6 = go.Figure(go.Bar(
-    x=cv["cv"].round(2), y=cv["label"], orientation="h",
+    x=cv["cv"].round(2),
+    y=cv["label"],
+    orientation="h",
     marker_color=cv["color"].tolist(),
-    text=cv["cv"].round(2), textposition="outside",
+    text=cv["cv"].round(2),
+    textposition="outside",
 ))
+
+apply_template(fig6)
+
 fig6.update_layout(
-    title="Transfer Spending Inequality by League (Higher = More Unequal)",
-    paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(255,255,255,0.03)",
-    font=dict(family="Inter", color="#c8d8f0"),
-    xaxis=dict(gridcolor="rgba(99,179,255,0.1)", title="Coefficient of Variation"),
-    yaxis=dict(linecolor="rgba(99,179,255,0.2)"),
-    margin=dict(t=40,b=20,l=20,r=60), height=320, showlegend=False,
+    title=dict(
+    text="Transfer Spending Inequality by League (Higher = More Unequal)",
+    font=dict(color="#eaf2ff", size=20)
+),
+    xaxis=dict(
+        title="Coefficient of Variation"
+    ),
+    yaxis=dict(
+        linecolor="rgba(99,179,255,0.2)"
+    ),
+    margin=dict(t=40, b=20, l=20, r=60),
+    height=320,
+    showlegend=False,
 )
+
 st.plotly_chart(fig6, use_container_width=True)
-insight("Ligue 1 is the most financially unequal league — PSG's dominance distorts the entire competition. The Premier League is ironically the most equal despite its size.")
+insight("Ligue 1 is the most financially unequal league - PSG's dominance distorts the entire competition. The Premier League is ironically the most equal despite its size.")
