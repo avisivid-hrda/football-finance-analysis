@@ -5,7 +5,7 @@ import pandas as pd
 from utils import (inject_css, load_data, section_header, insight, divider,
                    flourish_embed, apply_template, LEAGUE_COLORS, LEAGUE_LABELS)
 
-st.set_page_config(page_title="Spending vs Titles", page_icon="⚽", layout="wide")
+st.set_page_config(page_title="Chasing Glory", page_icon="⚽", layout="wide")
 inject_css()
 
 st.markdown("""
@@ -63,8 +63,8 @@ df["spending_bucket"] = pd.cut(df["spending_rank"],
 df["value_bucket"] = pd.cut(df["value_rank"],
     bins=[0,3,6,10,15,25], labels=["Top 3","4–6","7–10","11–15","16+"])
 
-section_header("Titles, Top 4 & Relegation", "Spending vs Trophies",
-               "How financial strength maps to the three most critical competitive outcomes.")
+section_header("Titles, Top 4 & Relegation", "Chasing Glory",
+               "Not everyone can afford the finish line")
 
 # ── Tabs ──────────────────────────────────────────────────────────────────────
 tab1, tab2, tab3 = st.tabs(["🏆 Title Winners", "⭐ Top 4 (UCL)", "⬇️ Relegation"])
@@ -92,10 +92,16 @@ with tab1:
             textfont=dict(color="#ffffff", size=13),
         ))
         fig_pie.update_layout(
-            paper_bgcolor="rgba(0,0,0,0)", font=dict(family="Inter",color="#c8d8f0"),
-            title="Title Wins by Spending Rank Group",
-            margin=dict(t=70, b=20, l=20, r=40), height=430, showlegend=False,
-        )
+            paper_bgcolor="rgba(0,0,0,0)",
+            font=dict(family="Inter", color="#c8d8f0"),
+            title=dict(
+                text="Title Wins by Spending Rank Group",
+                font=dict(color="white", size=20)
+    ),
+        margin=dict(t=70, b=20, l=20, r=40),
+        height=430,
+        showlegend=False,
+    )
         st.plotly_chart(fig_pie, use_container_width=True)
 
     with col2:
@@ -116,11 +122,14 @@ with tab1:
             xaxis=dict(title="Spending Rank", dtick=1, gridcolor="rgba(99,179,255,0.1)"),
             yaxis=dict(title="Title Win Rate (%)", gridcolor="rgba(99,179,255,0.1)"),
             margin=dict(t=70, b=20, l=20, r=40), height=430, showlegend=False,
-            title="Title Win Rate by Spending Rank",
+            title=dict(
+                text="Title Win Rate by Spending Rank",
+                font=dict(color="white", size=20)
+            )
         )
         st.plotly_chart(fig_wr, use_container_width=True)
 
-    insight("30% of all titles were won by the single highest spender - far above the 5% random chance baseline. Yet 70% of titles were won outside the top spender, proving money helps but doesn't guarantee.")
+    insight("The highest-spending team each season won 30% of titles (vs 5% by chance). Yet 70% of titles were won outside the top spender, proving money helps but doesn't guarantee.")
 
 # ── TAB 2: Top 4 ──────────────────────────────────────────────────────────────
 with tab2:

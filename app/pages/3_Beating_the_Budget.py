@@ -4,17 +4,17 @@ import plotly.graph_objects as go
 from utils import (inject_css, load_data, compute_residuals, section_header,
                    insight, divider, flourish_embed, apply_template, LEAGUE_COLORS)
 
-st.set_page_config(page_title="Overperformers", page_icon="⚽", layout="wide")
+st.set_page_config(page_title="Beating the Budget", page_icon="⚽", layout="wide")
 inject_css()
 
 df = load_data()
 dres = compute_residuals(df)
 
-section_header("Overperformers & Underperformers", "Performance Exceeding vs Missing Expectations",
-               "Residual analysis - comparing actual points to what a club's squad value predicted.")
+section_header("Overperformers & Underperformers", "Beating the Budget",
+               "Who outperforms their price tag and who falls short?")
 
 # ── Residual basis selector ───────────────────────────────────────────────────
-residual_basis = st.radio("Residual Basis", ["Squad Value", "Transfer Spending"], horizontal=True)
+residual_basis = st.radio("Residual Analysis", ["Squad Value", "Transfer Spending"], horizontal=True)
 res_col = "residual" if residual_basis == "Squad Value" else "residual_spend"
 pred_col = "predicted_points" if residual_basis == "Squad Value" else "pred_pts_spend"
 sub = dres.dropna(subset=[res_col])
@@ -24,49 +24,69 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.markdown("##### 🚀 Top 10 Overperformers")
-    top_over = sub.nlargest(10, res_col)[["club_name","league","season","points", res_col]].copy()
+    top_over = sub.nlargest(10, res_col)[["club_name", "league", "season", "points", res_col]].copy()
     top_over[res_col] = top_over[res_col].round(1)
     top_over["label"] = top_over["club_name"] + "\n" + top_over["season"]
 
     fig_ov = go.Figure(go.Bar(
-        x=top_over[res_col], y=top_over["label"],
-        orientation="h", marker_color="#00e5cc",
-        text=top_over[res_col].apply(lambda x: f"+{x}"), textposition="outside",
+        x=top_over[res_col],
+        y=top_over["label"],
+        orientation="h",
+        marker_color="#00e5cc",
+        text=top_over[res_col].apply(lambda x: f"+{x}"),
+        textposition="outside",
     ))
     fig_ov.update_layout(
-        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(255,255,255,0.03)",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(255,255,255,0.03)",
         font=dict(family="Inter", color="#c8d8f0"),
         xaxis=dict(gridcolor="rgba(99,179,255,0.1)", title="Points above expectation"),
         yaxis=dict(autorange="reversed"),
-        margin=dict(t=10,b=20,l=20,r=60), height=400, showlegend=False,
+        margin=dict(t=10, b=20, l=20, r=60),
+        height=400,
+        showlegend=False,
     )
     st.plotly_chart(fig_ov, use_container_width=True)
 
 with col2:
     st.markdown("##### 💸 Top 10 Underperformers")
-    top_under = sub.nsmallest(10, res_col)[["club_name","league","season","points", res_col]].copy()
+    top_under = sub.nsmallest(10, res_col)[["club_name", "league", "season", "points", res_col]].copy()
     top_under[res_col] = top_under[res_col].round(1)
     top_under["label"] = top_under["club_name"] + "\n" + top_under["season"]
 
     fig_un = go.Figure(go.Bar(
-        x=top_under[res_col], y=top_under["label"],
-        orientation="h", marker_color="#ff6b9d",
-        text=top_under[res_col], textposition="outside",
+        x=top_under[res_col],
+        y=top_under["label"],
+        orientation="h",
+        marker_color="#ff6b9d",
+        text=top_under[res_col],
+        textposition="outside",
     ))
     fig_un.update_layout(
-        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(255,255,255,0.03)",
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(255,255,255,0.03)",
         font=dict(family="Inter", color="#c8d8f0"),
         xaxis=dict(gridcolor="rgba(99,179,255,0.1)", title="Points below expectation"),
         yaxis=dict(autorange="reversed"),
-        margin=dict(t=10,b=20,l=20,r=60), height=400, showlegend=False,
+        margin=dict(t=10, b=20, l=20, r=60),
+        height=400,
+        showlegend=False,
     )
     st.plotly_chart(fig_un, use_container_width=True)
 
 col1i, col2i = st.columns(2)
-with col1i:
-    insight("Monaco 2016/17 - won Ligue 1 with 95 points despite a modest squad value. The 'Mbappé/Lemar generation' before the selloff.")
-with col2i:
-    insight("Chelsea 2022/23 - worst underperformer: €574M spent, only 44 pts. The most extreme waste of resources in the entire dataset.")
+
+if residual_basis == "Squad Value":
+    with col1i:
+        insight("Monaco 2016/17 won the Championship with 95 out of 114 points despite a modest squad value")
+    with col2i:
+        insight("Real Madrid 2018/19 stands out as the biggest letdown, despite one of the most valuable squads. This is the season after their star player Cristiano Ronaldo left.")
+
+else:  # Transfer Spending
+    with col1i:
+        insight("Liverpool 2019/20 shows how smart spending pays off; turning investment into dominant results.")
+    with col2i:
+        insight("Chelsea 2022/23 spent heavily but only finished 12th, earning just 44 points out of 114 marking one of the worst ROI seasons.")
 
 divider()
 

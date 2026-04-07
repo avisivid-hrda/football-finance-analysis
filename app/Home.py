@@ -137,7 +137,7 @@ st.markdown("""
     Research Question
 </div>
 <div style="font-size:1.7rem;font-weight:800;line-height:1.25;color:#fff;margin-bottom:16px;">
-    Does spending more money guarantee winning more games?
+    Does spending money really translate into results?
 </div>
 <p style="color:rgba(200,216,240,0.75);font-size:0.95rem;line-height:1.7;">
     This project analyses a decade of financial and performance data, between 2014-2024, across Europe's top 5 leagues -
@@ -178,7 +178,7 @@ st.markdown("""
 st.markdown("""
 <div class="finding-item">
     <span class="finding-icon">⚡</span>
-    <span><span class="finding-strong">30%</span> of titles were won by the single highest spender</span>
+    <span><span class="finding-strong">30%</span> of titles were won by the <span class="finding-strong">highest-spending team in that season</span></span>
 </div>
 """, unsafe_allow_html=True)
 

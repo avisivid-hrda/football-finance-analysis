@@ -4,13 +4,13 @@ import plotly.graph_objects as go
 from utils import (inject_css, load_data, section_header, insight, divider,
                    flourish_embed, apply_template, LEAGUE_COLORS, LEAGUE_LABELS)
 
-st.set_page_config(page_title="Efficiency Analysis", page_icon="🚀", layout="wide")
+st.set_page_config(page_title="Returns on the Pitch", page_icon="🚀", layout="wide")
 inject_css()
 
 df = load_data()
 
-section_header("Efficiency Analysis", "Investment vs Results Efficiency",
-               "Identifying clubs that deliver exceptional value relative to their financial investment.")
+section_header("Efficiency Analysis", "Returns on the Pitch",
+               "Some clubs buy success; others just buy players")
 
 # ── Metric selector ───────────────────────────────────────────────────────────
 metric = st.radio("Efficiency Metric",
@@ -29,7 +29,7 @@ else:
 # ── Top / Bottom 15 ───────────────────────────────────────────────────────────
 col1, col2 = st.columns(2)
 
-insight("Smaller, well-organised clubs consistently outperform on efficiency. RB Leipzig and Sassuolo regularly appear as best-value clubs in their respective leagues.")
+insight("Smaller, well-organised clubs consistently outperform on efficiency. RB Leipzig 🇩🇪 and Sassuolo 🇮🇹 regularly appear as best-value clubs in their respective leagues.")
 
 with col1:
     st.markdown("##### 🏅 Top 15 Most Efficient Clubs")
@@ -75,7 +75,7 @@ with col2:
 divider()
 
 # ── Efficiency by league ──────────────────────────────────────────────────────
-st.markdown("#### Efficiency Distribution by League")
+st.markdown("#### Efficiency across Leagues")
 dist_metric = st.radio(
     "Select efficiency basis",
     ["Squad Value", "Transfer Spending"],
@@ -91,14 +91,15 @@ else:
     xlabel = "Points per €10M Transfer Spend"
 fig_box = px.box(
     dist_df,
-    x="league_label",
-    y="efficiency",
+    y="league_label",          
+    x="efficiency",            
     color="league",
     color_discrete_map=LEAGUE_COLORS,
+    orientation="h",           
     labels={"efficiency": xlabel, "league_label": " "},
     title=f"{xlabel} — Distribution by League"
 )
 apply_template(fig_box)
 fig_box.update_layout(showlegend=False)
 st.plotly_chart(fig_box, use_container_width=True)
-insight("La Liga and Ligue 1 have bigger gaps between efficient and inefficient clubs, while the Premier League’s lower median suggests high spending often delivers less value for money.")
+insight("In La Liga and Ligue 1, the gap between smart and wasteful spending is wide; in Premier League, bigger budgets rarely translate into better value.")

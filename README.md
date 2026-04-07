@@ -33,7 +33,7 @@ Performance Metrics:
 
 - 🦁 Leicester City and Monaco emerged as standout overperformers
 
-- 💸 Chelsea 2022/23 recorded the worst ROI — €574M spent for just 44 points
+- 💸 Chelsea 2022/23 recorded the worst ROI - €574M spent and finished 12th in the league
 
 - 🏦 State-backed clubs initially overperform, then plateau over time
 

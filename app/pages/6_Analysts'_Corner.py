@@ -76,8 +76,8 @@ df = load_data()
 
 section_header(
     "Finance vs Performance",
-    "Financial Power & Performance Outcomes",
-    "Explore how financial strength relates to on-pitch outcomes across leagues, seasons, and clubs."
+    "Numbers Behind the Game",
+    "Where money meets metrics and the story gets technical"
 )
 
 dff = df.copy()
@@ -171,7 +171,7 @@ st.plotly_chart(fig_sc, use_container_width=True)
 divider()
 
 # ── Correlation heatmap ───────────────────────────────────────────────────────
-st.markdown("#### Correlation Matrix - Finance & Performance")
+st.markdown("#### Correlation between Finance & Performance")
 corr_cols = [
     "squad_market_value", "transfer_spending", "points", "wins",
     "goals_for", "goal_difference", "position"
