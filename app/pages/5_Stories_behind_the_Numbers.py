@@ -7,21 +7,85 @@ inject_css()
 
 st.markdown("""
 <style>
-.block-container { padding-top: 1rem; }
+.block-container {
+    padding-top: 1rem;
+}
 
-/* Safe: closed select box only */
+/* ========== CLOSED SELECTBOX ========== */
 div[data-baseweb="select"] > div {
-    background: rgba(255,255,255,0.06) !important;
-    border: 1px solid rgba(99,179,255,0.22) !important;
+    background: #2a3f73 !important;
+    border: 1px solid rgba(99,179,255,0.28) !important;
     border-radius: 12px !important;
-    color: #ffffff !important;
+    min-height: 44px !important;
     box-shadow: none !important;
+}
+
+div[data-baseweb="select"] input {
+    color: #ffffff !important;
 }
 
 div[data-baseweb="select"] span {
     color: #ffffff !important;
 }
 
+div[data-baseweb="select"] svg {
+    fill: #dbe7ff !important;
+}
+
+/* Focus state */
+div[data-baseweb="select"] > div:focus-within {
+    border: 1px solid #63b3ff !important;
+    box-shadow: 0 0 0 1px #63b3ff !important;
+}
+
+/* ========== OPEN DROPDOWN PANEL ========== */
+div[data-baseweb="popover"] > div {
+    background: #1c3270 !important;
+    border: 1px solid rgba(99,179,255,0.28) !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.28) !important;
+}
+
+/* List container */
+div[data-baseweb="popover"] ul,
+div[data-baseweb="popover"] [role="listbox"] {
+    background: #1c3270 !important;
+    padding: 4px !important;
+    margin: 0 !important;
+}
+
+/* Each option */
+div[data-baseweb="popover"] li,
+div[data-baseweb="popover"] [role="option"] {
+    background: transparent !important;
+    color: #ffffff !important;
+    border-radius: 8px !important;
+    margin: 2px 0 !important;
+}
+
+/* Hovered option */
+div[data-baseweb="popover"] li:hover,
+div[data-baseweb="popover"] [role="option"]:hover {
+    background: rgba(255,255,255,0.10) !important;
+    color: #ffffff !important;
+}
+
+/* Selected option */
+div[data-baseweb="popover"] li[aria-selected="true"],
+div[data-baseweb="popover"] [role="option"][aria-selected="true"] {
+    background: rgba(255,255,255,0.12) !important;
+    color: #ffffff !important;
+}
+
+/* Highlighted / keyboard-focused option */
+div[data-baseweb="popover"] li[aria-current="true"],
+div[data-baseweb="popover"] [role="option"][aria-current="true"] {
+    background: rgba(255,255,255,0.10) !important;
+    color: #ffffff !important;
+}
+
+/* ========== EXISTING CARDS ========== */
 .case-card {
     background: linear-gradient(135deg, rgba(18,70,196,0.20), rgba(0,229,204,0.08));
     border: 1px solid rgba(99,179,255,0.18);
@@ -89,40 +153,6 @@ div[data-baseweb="select"] span {
     .case-kpi-grid {
         grid-template-columns: repeat(2, minmax(0,1fr));
     }
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-/* Open dropdown menu only — do not touch layout */
-div[data-baseweb="popover"] {
-    background: transparent !important;
-}
-
-div[data-baseweb="popover"] > div {
-    background: #1a357a !important;
-    border: 1px solid rgba(99,179,255,0.22) !important;
-    border-radius: 12px !important;
-    overflow: hidden !important;
-}
-
-div[data-baseweb="popover"] [role="listbox"] {
-    background: #1a357a !important;
-    padding: 4px !important;
-}
-
-div[data-baseweb="popover"] [role="option"][aria-selected="true"] {
-    background: #0f2a5c !important;
-}
-
-div[data-baseweb="popover"] [role="option"]:hover {
-    background: rgba(255,255,255,0.08) !important;
-}
-
-div[data-baseweb="popover"] [role="option"][aria-selected="true"] {
-    background: rgba(0,229,204,0.20) !important;
-    color: #ffffff !important;
 }
 </style>
 """, unsafe_allow_html=True)

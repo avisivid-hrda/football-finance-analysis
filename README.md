@@ -54,6 +54,16 @@ This analysis has the following constraints:
 - Transfer spending reflects confirmed fees only - a standard approach in football analytics, as clubs are not obligated to disclose fees. 
 - Undisclosed records (~33% of transfers) are excluded
 
+The above limitation was further analysed and the findings are as follows:
+
+- Leagues: Ligue 1 (French league) is the most biased at 21.9%. Serie A and Premier League are the most reliable.
+
+- Clubs: The top 14 most affected clubs are almost entirely Ligue 1 and La Liga - Smaller clubs like Le Havre (43.9%), Guingamp (42.9%), Athletic Bilbao (40%). These clubs' spending is most understated. Notably these are mid/lower table clubs, not big spenders, so the bias likely doesn't distort headline spending comparisons significantly.
+
+- Years: 2020 stands out at 14.7%. The COVID caused this, but otherwise stable at 11–15%.
+
+- Players: No player exceeds 3 undisclosed fees. The missing data is spread thin across many players, not concentrated on superstars. There's no single high-profile player skewing the numbers systematically.
+
 ## 📁 Repository Structure
 
 ```text
@@ -63,9 +73,7 @@ football-finance-analysis/
 │
 ├── notebooks/                # Jupyter notebooks for cleaning + EDA 
 │
-├── plots/                    # All charts and visualisations
-│
-│── app                       # Multi-page Streamlit application for exploring the analysis and findings
+│── app/                      # Multi-page Streamlit application for exploring the analysis and findings
 │
 │── assets                    # Contains static visual assets for the app
 │

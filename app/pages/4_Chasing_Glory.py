@@ -168,7 +168,7 @@ with tab2:
         fig_t4v.update_yaxes(range=[0, top4_val["rate"].max() + 8])
         st.plotly_chart(fig_t4v, use_container_width=True)
 
-    insight("Top 3 spenders finish in the Champions League places 60–70% of the time. Beyond the top 6, the drop-off is steep - mid-table spenders rarely qualify.")
+    insight("Top 3 spenders finish in the Champions League places ~70–80% of the time. Beyond the top 6, the drop-off is steep - mid-table spenders rarely qualify.")
 
 # ── TAB 3: Relegation ─────────────────────────────────────────────────────────
 with tab3:

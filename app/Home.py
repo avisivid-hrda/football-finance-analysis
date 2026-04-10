@@ -7,7 +7,7 @@ st.set_page_config(
     page_title="The Price of Victory",
     page_icon="⚽",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 inject_css()
@@ -192,7 +192,7 @@ st.markdown("""
 st.markdown("""
 <div class="finding-item">
     <span class="finding-icon">💸</span>
-    <span>Chelsea 2022/23 recorded the worst ROI — <span class="finding-strong">€574M</span> spent for just <span class="finding-strong">44 points</span></span>
+    <span>Chelsea 2022/23 recorded the worst ROI - <span class="finding-strong">€574M</span> spent for just finishing <span class="finding-strong">12th in the league</span></span>
 </div>
 """, unsafe_allow_html=True)
 
